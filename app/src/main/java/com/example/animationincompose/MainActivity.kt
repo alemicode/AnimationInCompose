@@ -3,7 +3,9 @@ package com.example.animationincompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateInt
@@ -18,6 +20,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.example.animationincompose.ui.theme.AnimationInComposeTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -61,20 +65,30 @@ class MainActivity : ComponentActivity() {
                     }) {
                         Text(text = "Toggle")
                     }
-                    val transition = rememberInfiniteTransition(label = "")
-                    val color by transition.animateColor(
-                        initialValue = Color.Red,
-                        targetValue = Color.Green,
-                        animationSpec = infiniteRepeatable(
-                            animation = tween(200),
-                            repeatMode = RepeatMode.Reverse
-                        ), label = ""
-                    )
+                    AnimatedContent(
+                        targetState = isVisible.value,
+                        content = { isVisible ->
+                            if (!isVisible) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(200.dp)
+                                        .background(Color.Red)
+                                )
+                            } else {
+                                Column(
+                                    Modifier
+                                        .size(300.dp)
+                                        .background(Color.Blue)
+                                ) {
+                                    Text(text = "Mohamad")
+                                    Text(text = "Alemi")
+                                }
+                            }
 
-                    Box(
-                        modifier = Modifier
-                            .size(200.dp)
-                            .background(color)
+                        }, label = "",
+                        transitionSpec = {
+                            slideInHorizontally() + fadeIn() with slideOutHorizontally() + fadeOut()
+                        }
                     )
                 }
             }

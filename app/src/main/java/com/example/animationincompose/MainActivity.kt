@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -56,15 +57,19 @@ class MainActivity : ComponentActivity() {
                     }
 
 
-                    AnimatedVisibility(
-                        visible = isVisible.value,
-                        enter = slideInHorizontally() + fadeIn(),
-                        exit = slideOutHorizontally() + fadeOut(),
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Box(modifier = Modifier.background(Color.Red))
-                    }
-
+                    val borderRadius by animateIntAsState(
+                        targetValue = if (isRound.value) 100 else 0,
+                        label = "",
+                        animationSpec = tween(
+                            durationMillis = 400,
+                        )
+                    )
+                    Box(
+                        modifier = Modifier
+                            .size(200.dp)
+                            .clip(RoundedCornerShape(borderRadius))
+                            .background(Color.Red)
+                    )
                 }
             }
         }

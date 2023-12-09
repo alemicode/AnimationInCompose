@@ -5,8 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateInt
 import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
@@ -58,29 +61,19 @@ class MainActivity : ComponentActivity() {
                     }) {
                         Text(text = "Toggle")
                     }
-                    val transition = updateTransition(
-                        targetState = isRound,
-                        label = null
+                    val transition = rememberInfiniteTransition(label = "")
+                    val color by transition.animateColor(
+                        initialValue = Color.Red,
+                        targetValue = Color.Green,
+                        animationSpec = infiniteRepeatable(
+                            animation = tween(200),
+                            repeatMode = RepeatMode.Reverse
+                        ), label = ""
                     )
 
-                    val borderRadius by transition.animateInt(
-                        transitionSpec = { tween(2000) },
-                        label = "radius",
-                        targetValueByState = { isRound ->
-                            if (isRound.value) 100 else 0
-                        }
-                    )
-                    val color by transition.animateColor(
-                        transitionSpec = { tween(1000) },
-                        label = "radius",
-                        targetValueByState = { isRound ->
-                            if (isRound.value) Color.Green else Color.Red
-                        }
-                    )
                     Box(
                         modifier = Modifier
                             .size(200.dp)
-                            .clip(RoundedCornerShape(borderRadius))
                             .background(color)
                     )
                 }

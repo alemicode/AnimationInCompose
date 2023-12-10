@@ -5,8 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
@@ -58,11 +60,28 @@ class MainActivity : ComponentActivity() {
 
                     AnimatedVisibility(
                         visible = isVisible.value,
-                        enter = slideInHorizontally() + fadeIn(),
-                        exit = slideOutHorizontally() + fadeOut(),
-                        modifier = Modifier.fillMaxSize()
+                        enter = slideInHorizontally(
+                            animationSpec = keyframes {
+                                this.durationMillis = 1000
+                            }
+                        ) + fadeIn(
+                            animationSpec = keyframes {
+                                this.durationMillis = 1000
+                            }
+                        ),
+                        exit = slideOutHorizontally(
+                            animationSpec = keyframes {
+                                this.durationMillis = 1000
+                            }
+                        ) + fadeOut(
+                            animationSpec = keyframes {
+                                this.durationMillis = 1000
+                            }
+                        ),
                     ) {
-                        Box(modifier = Modifier.background(Color.Red))
+                        Box(modifier = Modifier
+                            .background(Color.Red)
+                            .size(200.dp))
                     }
 
                 }

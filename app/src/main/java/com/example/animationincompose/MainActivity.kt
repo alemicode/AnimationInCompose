@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                             }
                         ) + fadeIn(
                             animationSpec = keyframes {
-                                this.durationMillis = 1000
+                                this.durationMillis = 1400
                             }
                         ),
                         exit = slideOutHorizontally(

@@ -1,61 +1,83 @@
-package com.example.animationincompose
-
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 @Composable
-fun AnimatedBox() {
-    // Use remember to initialize the Animatable values
-    val translateY = remember { Animatable(0f) }
-    val alpha = remember { Animatable(1f) }
-    val coroutineScope = rememberCoroutineScope()
+fun TranslateAnimation() {
+    val translateYanim = remember { Animatable(0f) }
+    val alpha = remember { Animatable(0f) }
 
-    // Use Modifier.pointerInput to detect tap gestures
-    val modifier = Modifier.clickable {
-        // When the Box is tapped, animate the translateY and alpha values
-        // Animate to a random y value between -200 and 200
-        val targetY = Random.nextInt(-200, 200).toFloat()
-        // Animate to either 0 or 1 for alpha
-        val targetAlpha = if (alpha.value == 0f) 1f else 0f
-        // Use rememberCoroutineScope to get a coroutine scope
-        // Use launch to run the animations in parallel
-        coroutineScope.launch {
-            // Animate the translateY value with a spring animation
-            translateY.animateTo(-200f, animationSpec = spring())
-            // Animate the alpha value with a tween animation
-            alpha.animateTo(targetAlpha, animationSpec = tween(1000))
+    val scope = rememberCoroutineScope()
+
+    val onButtonClick: () -> Unit = {
+        scope.launch {
+            launch {
+                translateYanim.animateTo(
+                    targetValue = 1f,
+                    animationSpec = tween(2000),
+                )
+            }
+            launch {
+                alpha.animateTo(
+                    targetValue = 1f,
+                    animationSpec = tween(2000)
+                )
+            }
+
         }
-
     }
 
-    // Use Modifier.graphicsLayer to apply the animations to the Box
-    Box(
-        modifier = modifier
+    val travelDistance = 120.dp
+    val distance = with(LocalDensity.current) { travelDistance.toPx() }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Button(onClick = { onButtonClick() }) {
+            Text(text = "Click On Me!")
+
+
+        }
+        Box(modifier = Modifier
             .size(100.dp)
-            .background(Color.Red)
             .graphicsLayer {
-                // Use the translateY value to set the translationY property
-                translationY = translateY.value
-                // Use the alpha value to set the alpha property
+                translationY = translateYanim.value * distance
                 this.alpha = alpha.value
             }
-    )
-}
+            .background(Color.Red)
 
+        )
+    }
+
+}

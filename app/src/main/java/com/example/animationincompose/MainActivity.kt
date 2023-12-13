@@ -1,15 +1,25 @@
 package com.example.animationincompose
 
+import AnimatedBorderCard
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.example.animationincompose.ui.theme.AnimationInComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,29 +28,32 @@ class MainActivity : ComponentActivity() {
         setContent {
             AnimationInComposeTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .border(width = 2.dp, color = Color.Red, shape = RectangleShape),
                 ) {
-                    Greeting("Android")
+                    AnimatedBorderCard(
+                        modifier = Modifier.size(250.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(24.dp)) {
+                            Text(
+                                text = "Mohamad Alemi",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = MaterialTheme.typography.displaySmall.fontSize
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                text = "A Senior Android developer with more than 6 years of experience ",
+                                fontSize = MaterialTheme.typography.bodyMedium.fontSize
+                            )
+
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AnimationInComposeTheme {
-        Greeting("Android")
     }
 }

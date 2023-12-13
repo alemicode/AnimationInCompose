@@ -58,6 +58,8 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation ("androidx.compose.material:material:1.3.0")
+    implementation ("androidx.compose.material3:material3:1.1.0")
     implementation("androidx.compose.material3:material3")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -66,4 +68,12 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    implementation("app.rive:rive-android:8.7.0")
+    // During initialization, you may need to add a dependency
+    // for Jetpack Startup
+    implementation ("androidx.startup:startup-runtime:1.1.1")
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.31.3-beta")
+
+
 }

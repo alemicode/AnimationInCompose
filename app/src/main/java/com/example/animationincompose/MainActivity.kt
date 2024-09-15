@@ -5,10 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateInt
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
@@ -62,6 +64,7 @@ class MainActivity : ComponentActivity() {
                         Text(text = "Toggle")
                     }
                     val transition = rememberInfiniteTransition(label = "")
+
                     val color by transition.animateColor(
                         initialValue = Color.Red,
                         targetValue = Color.Green,
@@ -70,6 +73,23 @@ class MainActivity : ComponentActivity() {
                             repeatMode = RepeatMode.Reverse
                         ), label = ""
                     )
+
+                    // Better example
+//                    val colorAnimate by tansitionn.animateColor(
+//                        initialValue = Color.Red,
+//                        targetValue = Color.Green,
+//                        animationSpec = InfiniteRepeatableSpec(
+//                            animation = keyframes {
+//                                durationMillis = 1000
+//                                Color.Red at 0
+//                                Color.Red at 100
+//                                Color.Blue at 200
+//                                Color.LightGray at 500
+//                                Color.Magenta at 1000
+//                            },
+//                            repeatMode = RepeatMode.Reverse
+//                        ), label = ""
+//                    )
 
                     Box(
                         modifier = Modifier
